@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class Body extends StatefulWidget {
@@ -16,11 +16,14 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int selectedIndex = 0;
-  var cloudStore = FirebaseFirestore.instance.collection("songs");
+  bool isEmpty = false;
   var songsMap = Map<String, dynamic>();
+  AudioPlayer audioPlayer = AudioPlayer();
+  var cloudStore = FirebaseFirestore.instance.collection("songs");
 
-  void playOrPause() {
-    setState(() {});
+  void play(String path) async {
+    int result = await audioPlayer.play("$path");
+    print("$result");
   }
 
   Future<String> get _externalPath async {
@@ -45,7 +48,6 @@ class _BodyState extends State<Body> {
   }
 
   Future<void> downloadMP3(String url, String path) async {
-    storagePermission();
     var yt = YoutubeExplode();
     var vid = _cleanURL(url);
     var manifest = await yt.videos.streamsClient.getManifest('$vid');
@@ -66,14 +68,6 @@ class _BodyState extends State<Body> {
     }
   }
 
-  void storagePermission() async {
-    var status = await Permission.storage.status;
-    if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
-    Permission.storage.request();
-  }
-
   Future<void> getData() {
     for (int i = 0; i < 10; i++) {
       print("${songsMap[i]}");
@@ -82,14 +76,17 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    super.initState();
     for (int i = 0; i < 10; i++) {
       var songMap = Map<String, dynamic>();
       cloudStore.doc("song$i").get().then((doc) {
         songMap = doc.data();
         songsMap['$i'] = songMap;
+        setState(() {
+          isEmpty = true;
+        });
       }).catchError((error) => print(error));
     }
+    super.initState();
     // print(songsMap);
   }
 
@@ -114,7 +111,7 @@ class _BodyState extends State<Body> {
           ),
           TextButton(
             child: Text("youtube url 재생"),
-            onPressed: () => playOrPause(),
+            onPressed: () {},
           ),
           TextButton(
             child: Text("cloud store test"),

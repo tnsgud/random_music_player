@@ -1,16 +1,13 @@
 import 'dart:async';
+import 'screens/Loading.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:random_music_player/screens/Home.dart';
-import 'screens/Loading.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
 }
-
-// 이것은 확인용 주석입니다. 1
-// 이것은 확인용 주석입니다. 2
 
 class MyApp extends StatelessWidget {
   @override
@@ -121,41 +118,47 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
     initializeFlutterFire();
+    storagePermission();
+    super.initState();
   }
 
-  void setData() {}
+  void storagePermission() async {
+    var status = await Permission.storage.status;
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+    Permission.storage.request();
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    // CollectionReference user = FirebaseFirestore.instance.collection('songs');
-    // void _showError() {
-    //   showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return AlertDialog(
-    //           backgroundColor: theme.primaryColor,
-    //           title: Text(
-    //             'Error',
-    //             style: TextStyle(color: theme.accentColor),
-    //           ),
-    //           content: Text(
-    //             "에러가 발생했습니다.\n인터넷이 켜져있는지 확인해주세요.\n그래도 문제가 있다면 앱을\n재실행 해주시거나\n개발자에게 문의해주세요!",
-    //             style: theme.textTheme.bodyText1,
-    //           ),
-    //           actions: [
-    //             TextButton(
-    //                 onPressed: () {
-    //                   Navigator.pop(context);
-    //                 },
-    //                 child:
-    //                     Text('닫기', style: TextStyle(color: theme.accentColor)))
-    //           ],
-    //         );
-    //       });
-    // }
+    void _showError() {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: theme.primaryColor,
+              title: Text(
+                'Error',
+                style: TextStyle(color: theme.accentColor),
+              ),
+              content: Text(
+                "에러가 발생했습니다.\n인터넷이 켜져있는지 확인해주세요.\n그래도 문제가 있다면 앱을\n재실행 해주시거나\n개발자에게 문의해주세요!",
+                style: theme.textTheme.bodyText1,
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child:
+                        Text('닫기', style: TextStyle(color: theme.accentColor)))
+              ],
+            );
+          });
+    }
 
     print("$_error///$_initialized");
     if (_error) {
@@ -171,27 +174,7 @@ class _HomePageState extends State<HomePage> {
           () => Navigator.push(
               context, MaterialPageRoute(builder: (context) => Home())));
     }
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     leading: TextButton(
-    //       child: Text("asdf"),
-    //       onPressed: () {
-    //         Map<String, dynamic> title;
-    //         FirebaseFirestore.instance
-    //             .collection("songs")
-    //             .doc("song0")
-    //             .get()
-    //             .then((DocumentSnapshot ds) {
-    //           title = ds.data();
-    //           print(title);
-    //         }).catchError((error) => print(error));
-    //       },
-    //     ),
-    //   ),
-    //   body: Column(
-    //     children: [Text('hello')],
-    //   ),
-    // );
+
     return Loading();
   }
 }
