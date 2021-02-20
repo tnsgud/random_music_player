@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "620412839489",
+    "firebase_url": "https://music-c5930.firebaseio.com",
+    "project_id": "music-c5930",
+    "storage_bucket": "music-c5930.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620412839489:android:c94588bcbfbe60339948c0",
+        "android_client_info": {
+          "package_name": "io.github.tnsgud.random_music_player"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620412839489-vaej2tg7junc1nce8cjla569p2jg0hi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgd3v0mSsMgevlKCaxLUxR58F7aeRBAw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620412839489-vaej2tg7junc1nce8cjla569p2jg0hi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
