@@ -83,6 +83,7 @@ class _BodyState extends State<Body> {
         songMap = doc.data();
         songsMap['$i'] = songMap;
         setState(() {
+          print(songsMap);
           isEmpty = true;
         });
       }).catchError((error) => print(error));
@@ -127,8 +128,8 @@ class _BodyState extends State<Body> {
           TextButton(
             child: Text("downlaod music"),
             onPressed: () async {
-              var path = "${await _externalPath}/filename.m4a";
-              downloadMP3("https://youtu.be/Tch_MpMRu_g", path);
+              var path = "${await _externalPath}/${songsMap['9']['title']}.m4a";
+              await downloadMP3("${songsMap['9']['url']}", path);
               play(path);
             },
           ),
@@ -213,7 +214,14 @@ class _TasteCategoriesState extends State<TasteCategories> {
               width: width * 0.5,
               height: height * 0.2,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  for (int i = 0; i < widget.cartegoriesMap.length; i++) {
+                    if (cartegoriesList[9] ==
+                        widget.cartegoriesMap['$i']['title']) {
+                      // kdfjldksfsjfskdljflsdkf
+                    }
+                  }
+                },
                 child: Image.asset("assets/images/RandomPlayIcon-nobg.png"),
               )),
           Padding(
