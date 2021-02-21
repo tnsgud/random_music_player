@@ -4,9 +4,8 @@ import download
 choice = input("할 작업을 선택해주세요.\n1:파일 다운로드/2:데이터 업로드/3:텍스트파일 수정 : ")
 
 if choice == '1':
-    url = input("다운 받을 노래의 url를 쓰세요. : ")
-    name = input("파일의 이름을 써주세요. : ")
-    download.youtubeDownload(url, name)
+    download.youtubeDownload(download.parseText(
+        download.readFile("./musics.txt")))
 elif choice == '2':
     firebase.setData(firebase.parseText(
         firebase.readFile("./musics.txt")), firebase.startFirebase())

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -22,8 +22,8 @@ class _BodyState extends State<Body> {
   var cloudStore = FirebaseFirestore.instance.collection("songs");
 
   void play(String path) async {
-    int result = await audioPlayer.play("$path");
-    print("$result");
+    var durataion = audioPlayer.setFilePath("$path");
+    audioPlayer.play();
   }
 
   Future<String> get _externalPath async {
@@ -54,6 +54,7 @@ class _BodyState extends State<Body> {
     var streamInfo = manifest.audioOnly.withHighestBitrate();
     var size = streamInfo.size;
     writeStream(streamInfo, '$path');
+    print("다운로드 완료");
   }
 
   Future<void> writeStream(var streamInfo, String path) async {
@@ -111,7 +112,13 @@ class _BodyState extends State<Body> {
           ),
           TextButton(
             child: Text("youtube url 재생"),
-            onPressed: () {},
+            onPressed: () {
+              if (audioPlayer.playing == true) {
+                audioPlayer.pause();
+              } else {
+                audioPlayer.play();
+              }
+            },
           ),
           TextButton(
             child: Text("cloud store test"),
@@ -122,6 +129,7 @@ class _BodyState extends State<Body> {
             onPressed: () async {
               var path = "${await _externalPath}/filename.m4a";
               downloadMP3("https://youtu.be/Tch_MpMRu_g", path);
+              play(path);
             },
           ),
         ],

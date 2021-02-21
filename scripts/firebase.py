@@ -16,7 +16,7 @@ def startFirebase():
     FireBase와 연동을 하는 메소드
     """
     cred = credentials.Certificate(
-        "./music-c5930-firebase-adminsdk-oplbd-c6c7c3ab86.json")
+        "./music-c5930-firebase-adminsdk-oplbd-8b4ba9c398.json")
     firebase_admin.initialize_app(
         cred, {'projectId': "music-c5930"})
     # 'databaseURL': "https://music-c5930.firebaseio.com/"
